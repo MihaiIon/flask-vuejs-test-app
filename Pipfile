@@ -8,6 +8,7 @@ gunicorn = "==19.7.1"
 flask-restx = "*"
 python-dotenv = "*"
 flask = "*"
+flask-sqlalchemy = "*"
 
 [dev-packages]
 pytest = "*"
