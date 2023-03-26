@@ -25,6 +25,21 @@ def test_note_creation__anonymous_author_when_creating_a_note_without_an_author(
     created_note = json.loads(response.data)
     assert created_note['author_full_name'] == expected_author_full_name
 
+def test_note_creation__author_full_name_returned_when_note_has_an_author(client):
+    author_first_name = 'Bobby'
+    author_last_name = 'Johns'
+    expected_author_full_name = f"{author_first_name} {author_last_name}"
+
+    author_creation_data = { 'first_name': author_first_name, 'last_name': author_last_name }
+    author_creation_response = client.post('/api/author/', data=author_creation_data)
+    created_author = json.loads(author_creation_response.data)
+
+    note_creation_data = { 'title': 'abc', 'content': 'xyz', 'author_id': created_author['id'] }
+    note_creation_response = client.post('/api/note/', data=note_creation_data)
+    created_note = json.loads(note_creation_response.data)
+
+    assert created_note['author_full_name'] == expected_author_full_name
+
 def test_note_creation__error_when_attempting_to_create_a_note_without_a_title(client):
     data = { 'content': 'xyz' }
     response = client.post('/api/note/', data=data)

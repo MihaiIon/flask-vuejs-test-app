@@ -29,6 +29,10 @@ class Note(Resource):
         args = note_reqparser.parse_args()
 
         note_repository = NoteRepository()
-        new_note = note_repository.create_note(title=args['title'], content=args['content'])
+        new_note = note_repository.create_note(
+            title=args['title'],
+            content=args['content'],
+            author_id=args['author_id']
+        )
 
         return new_note
