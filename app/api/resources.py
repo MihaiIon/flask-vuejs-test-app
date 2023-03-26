@@ -20,7 +20,7 @@ db = Database.instance()
 
 @api_rest.route('/note/')
 class Note(Resource):
-    @api_rest.expect(note_model)
+
     @api_rest.marshal_with(note_model)
     def post(self):
         title = request.form.get('title')
