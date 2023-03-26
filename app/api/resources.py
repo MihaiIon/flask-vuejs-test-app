@@ -7,23 +7,28 @@ from flask import request
 from flask_restx import Resource, abort
 from . import api_rest
 
-from app.models import NoteModel
-from app.repositories import NoteRepository
-from app.schemas.note import note_model
-from .parsers import note_parser
+from app.repositories import AuthorRepository, NoteRepository
+from app.schemas import *
+from .parsers import *
 
-from app.utils import Database
-db = Database.instance()
+@api_rest.route('/author/')
+class Author(Resource):
+    @api_rest.marshal_with(author_model_schema)
+    def post(self):
+        args = author_reqparser.parse_args()
+
+        author_repository = AuthorRepository()
+        new_author = author_repository.create_author(first_name=args['first_name'], last_name=args['last_name'])
+
+        return new_author
 
 @api_rest.route('/note/')
 class Note(Resource):
-    @api_rest.marshal_with(note_model)
+    @api_rest.marshal_with(note_model_schema)
     def post(self):
-        args = note_parser.parse_args()
-        title = args.get('title')
-        content = args.get('content')
+        args = note_reqparser.parse_args()
 
         note_repository = NoteRepository()
-        new_note = note_repository.create_note(title=title, content=content)
+        new_note = note_repository.create_note(title=args['title'], content=args['content'])
 
         return new_note
