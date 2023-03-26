@@ -18,4 +18,19 @@ import pytest
 from app.utils import Database
 db = Database.instance()
 
+@api_rest.route('/note/')
+class Note(Resource):
+    @api_rest.expect(create_note_model)
+    @api_rest.marshal_with(create_note_model)
+    def post(self):
+        title = request.form.get('title')
+        abort(400, message='A note must have a title') if not title else None
+        
+        content = request.form.get('content')
+        abort(400, message='A note must have a content') if not content else None
 
+        new_note = NoteModel(title=title, content=content)
+        db.session.add(new_note)
+        db.session.commit()
+
+        return new_note
