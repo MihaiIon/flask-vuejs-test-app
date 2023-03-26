@@ -13,7 +13,7 @@ from .parsers import *
 
 @api_rest.route('/author/')
 class Author(Resource):
-    @api_rest.marshal_with(author_model_schema)
+    @api_rest.marshal_with(author_model)
     def post(self):
         args = author_reqparser.parse_args()
 
@@ -24,7 +24,7 @@ class Author(Resource):
 
 @api_rest.route('/note/')
 class Note(Resource):
-    @api_rest.marshal_with(note_model_schema)
+    @api_rest.marshal_with(note_model)
     def post(self):
         args = note_reqparser.parse_args()
 
