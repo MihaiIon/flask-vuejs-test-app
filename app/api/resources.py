@@ -11,7 +11,7 @@ from flask_sqlalchemy import SQLAlchemy
 # from .security import require_auth
 from . import api_rest
 from app.models import NoteModel
-from app.schemas.note import create_note_model
+from app.schemas.note import note_model
 
 import pytest
 
@@ -20,8 +20,8 @@ db = Database.instance()
 
 @api_rest.route('/note/')
 class Note(Resource):
-    @api_rest.expect(create_note_model)
-    @api_rest.marshal_with(create_note_model)
+    @api_rest.expect(note_model)
+    @api_rest.marshal_with(note_model)
     def post(self):
         title = request.form.get('title')
         abort(400, message='A note must have a title') if not title else None
