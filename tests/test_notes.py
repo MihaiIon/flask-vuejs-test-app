@@ -30,8 +30,8 @@ def test_note_creation__error_when_attempting_to_create_a_note_without_a_title(c
     response = client.post('/api/note/', data=data)
 
     data = json.loads(response.data)
-    error_message = data.get('message', '')
-    assert error_message == 'A note must have a title'
+    error_message = data.get('errors', {}).get('title', '')
+    assert 'A note must have a title' in error_message
     assert response.status_code == 400
 
 def test_note_creation__error_when_attempting_to_create_a_note_without_a_content(client):
@@ -39,8 +39,8 @@ def test_note_creation__error_when_attempting_to_create_a_note_without_a_content
     response = client.post('/api/note/', data=data)
 
     data = json.loads(response.data)
-    error_message = data.get('message', '')
-    assert error_message == 'A note must have a content'
+    error_message = data.get('errors', {}).get('content', '')
+    assert 'A note must have a content' in error_message
     assert response.status_code == 400
 
 
