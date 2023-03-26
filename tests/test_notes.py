@@ -43,25 +43,32 @@ def test_note_creation(note_data, anonymous_note):
 def test_note_creation__anonymous_author_when_creating_a_note_without_an_author(anonymous_note):
     assert anonymous_note['author_full_name'] == 'Anonymous'
 
-def test_note_creation__author_full_name_returned_when_note_has_an_author(author_bobby_data, bobby_note):
-    author_first_name = author_bobby_data['first_name']
-    author_last_name = author_bobby_data['last_name']
+def test_note_creation__note_with_an_author(author_bobby, bobby_note):
+    author_first_name = author_bobby['first_name']
+    author_last_name = author_bobby['last_name']
     expected_author_full_name = f"{author_first_name} {author_last_name}"
 
+    assert bobby_note['author_id'] == author_bobby['id']
     assert bobby_note['author_full_name'] == expected_author_full_name
 
 def test_note_creation__error_when_attempting_to_create_a_note_without_a_title(client):
     data = { 'content': 'abc' }
     response = client.post('/api/note/', data=data)
+    response_data = json.loads(response.data)
 
-    data = json.loads(response.data)
-    error_message = data.get('errors', {}).get('title', '')
+    error_message = response_data.get('errors', {}).get('title', '')
     assert 'A note must have a title' in error_message
     assert response.status_code == 400
 
 def test_note_creation__error_when_attempting_to_create_a_note_without_a_content(client):
     data = { 'title': 'abc' }
     response = client.post('/api/note/', data=data)
+    response_data = json.loads(response.data)
+
+    error_message = response_data.get('errors', {}).get('content', '')
+    assert 'A note must have a content' in error_message
+    assert response.status_code == 400
+
 
     data = json.loads(response.data)
     error_message = data.get('errors', {}).get('content', '')

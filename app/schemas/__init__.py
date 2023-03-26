@@ -15,5 +15,6 @@ note_model = api_rest.model('Note', {
     'id': fields.Integer(readOnly=True, description='Note identifier'),
     'title': fields.String(required=True, description='Note title'),
     'content': fields.String(required=True, description='Note content'),
+    'author_id': fields.Integer(description='Note author identifier'),
     'author_full_name': fields.String(attribute=lambda note: format_author_full_name(note.author) if note.author else 'Anonymous')
 })
