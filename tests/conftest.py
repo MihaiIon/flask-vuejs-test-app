@@ -1,7 +1,8 @@
 import os
 import pytest
 
-from app import app, db
+from app import app
+from app.utils import Database
 from sqlalchemy.sql import text
 
 # define test database URI
@@ -14,7 +15,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = TEST_DB_URI
 # define schema path
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(BASE_DIR)  # get the parent directory of the current folder
-SQL_SCHEMA_PATH = os.path.join(ROOT_DIR, 'schema.sql') 
+SQL_SCHEMA_PATH = os.path.join(ROOT_DIR, 'schema.sql')
+
+# Get connection to database
+db = Database.instance()
 
 @pytest.fixture(scope='module')
 def client():
