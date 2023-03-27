@@ -194,3 +194,12 @@ def test_note_update__change_author(client, bobby_note, author_stephen):
 
     assert updated_note['author_id'] == author_stephen['id']
     assert updated_note['author_full_name'] == expected_author_full_name
+
+""" Delete """
+
+def test_note_delete(client, anonymous_note):
+    response = client.delete(f"/api/note/{anonymous_note['id']}")
+    assert response.status_code == 200
+
+    response = client.get(f"/api/note/{anonymous_note['id']}")
+    assert response.status_code == 404

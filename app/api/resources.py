@@ -61,4 +61,7 @@ class Note(Resource):
         modified_note = note_repository.update_note(note_id=note_id, attributes_to_update=args)
 
         return modified_note
-        
+
+    def delete(self, note_id):
+        note_repository = NoteRepository()
+        deleted_note = note_repository.delete_note(note_id=note_id)

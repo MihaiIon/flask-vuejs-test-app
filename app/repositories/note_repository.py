@@ -36,3 +36,12 @@ class NoteRepository:
 
         db.session.commit()
         return record
+
+    def delete_note(self, note_id: int):
+        record = self.find_by_id(note_id)
+
+        if record:
+            db.session.delete(record)
+            db.session.commit()
+
+        return record
