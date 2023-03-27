@@ -26,18 +26,31 @@ class Author(Resource):
 class Note(Resource):
     @api_rest.marshal_with(note_model)
     def post(self):
-        args = note_reqparser.parse_args()
+        args = create_note_reqparser.parse_args()
 
         note_repository = NoteRepository()
         new_note = note_repository.create_note(attributes_to_update=args)
 
         return new_note
 
+
+@api_rest.route('/note/<int:note_id>')
+class Note(Resource):
     @api_rest.marshal_with(note_model)
-    def put(self):
-        args = update_note_reqparser.parse_args()
-        print(args)
+    def get(self, note_id):
+        args = read_note_reqparser.parse_args()
+
         note_repository = NoteRepository()
-        modified_note = note_repository.update_note(note_id=args['id'], attributes_to_update=args)
+        note = note_repository.find_by_id(note_id)
+
+        return note
+
+    @api_rest.marshal_with(note_model)
+    def put(self, note_id):
+        args = update_note_reqparser.parse_args()
+
+        note_repository = NoteRepository()
+        modified_note = note_repository.update_note(note_id=note_id, attributes_to_update=args)
 
         return modified_note
+        
