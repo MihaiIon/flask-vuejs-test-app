@@ -25,6 +25,13 @@ class Author(Resource):
 @api_rest.route('/note/')
 class Note(Resource):
     @api_rest.marshal_with(note_model)
+    def get(self):
+        note_repository = NoteRepository()
+        notes = note_repository.all()
+
+        return notes
+    
+    @api_rest.marshal_with(note_model, code=201)
     def post(self):
         args = create_note_reqparser.parse_args()
 
@@ -40,6 +47,9 @@ class Note(Resource):
     def get(self, note_id):
         note_repository = NoteRepository()
         note = note_repository.find_by_id(note_id)
+
+        if not note:
+            abort(404, message=f"Note {note_id} not found")
 
         return note
 

@@ -4,6 +4,10 @@ from app.utils import Database
 db = Database.instance()
 
 class NoteRepository:
+    def all(self):
+        records = db.session.query(Model).all()
+        return records
+
     def find_by_id(self, note_id: int):
         record = db.session.get(Model, note_id)
         return record

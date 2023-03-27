@@ -27,7 +27,11 @@ def note_data():
 
 @pytest.fixture
 def bobby_note_data(note_data, author_bobby):
-    return {'title': note_data['title'], 'content': note_data['title'], 'author_id': author_bobby['id']}
+    return {'title': f"{author_bobby['first_name']} {note_data['title']}", 'content': note_data['title'], 'author_id': author_bobby['id']}
+
+@pytest.fixture
+def stephen_note_data(note_data, author_stephen):
+    return {'title': f"{author_stephen['first_name']} {note_data['title']}", 'content': note_data['title'], 'author_id': author_stephen['id']}
 
 @pytest.fixture
 def anonymous_note(client, note_data):
@@ -38,6 +42,43 @@ def anonymous_note(client, note_data):
 def bobby_note(client, bobby_note_data):
     response = client.post('/api/note/', data=bobby_note_data)
     return json.loads(response.data)
+
+@pytest.fixture
+def stephen_note(client, stephen_note_data):
+    response = client.post('/api/note/', data=stephen_note_data)
+    return json.loads(response.data)
+
+""" Read """
+
+def test_note_read__list(client, anonymous_note, bobby_note, stephen_note):
+    response = client.get('/api/note/')
+    notes = json.loads(response.data)
+
+    note_ids = sorted([note['id'] for note in notes])
+    expected_note_ids = sorted([anonymous_note['id'], bobby_note['id'], stephen_note['id']])
+
+    assert response.status_code == 200
+    assert note_ids == expected_note_ids
+
+def test_note_read(client, bobby_note):
+    response = client.get(f"/api/note/{bobby_note['id']}")
+    note = json.loads(response.data)
+
+    assert response.status_code == 200
+    assert note['id'] == bobby_note['id']
+    assert note['title'] == bobby_note['title']
+    assert note['content'] == bobby_note['content']
+    assert note['author_id'] == bobby_note['author_id']
+    assert note['author_full_name'] == bobby_note['author_full_name']
+
+def test_note_read__error_when_request_a_note_that_does_not_exist(client, bobby_note):
+    none_existing_note_id = 1234567890
+
+    response = client.get(f"/api/note/{none_existing_note_id}")
+    data = json.loads(response.data)
+
+    assert response.status_code == 404
+    assert f"Note {none_existing_note_id} not found" in data['message'] 
 
 """ Creation """
 
@@ -76,19 +117,6 @@ def test_note_creation__note_with_an_author(author_bobby, bobby_note):
 
     assert bobby_note['author_id'] == author_bobby['id']
     assert bobby_note['author_full_name'] == expected_author_full_name
-
-""" Read """
-
-def test_note_read(client, bobby_note):
-    response = client.get(f"/api/note/{bobby_note['id']}")
-    note = json.loads(response.data)
-
-    assert response.status_code == 200
-    assert note['id'] == bobby_note['id']
-    assert note['title'] == bobby_note['title']
-    assert note['content'] == bobby_note['content']
-    assert note['author_id'] == bobby_note['author_id']
-    assert note['author_full_name'] == bobby_note['author_full_name']
 
 """ Update """
 
