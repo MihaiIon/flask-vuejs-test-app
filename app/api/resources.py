@@ -29,10 +29,15 @@ class Note(Resource):
         args = note_reqparser.parse_args()
 
         note_repository = NoteRepository()
-        new_note = note_repository.create_note(
-            title=args['title'],
-            content=args['content'],
-            author_id=args['author_id']
-        )
+        new_note = note_repository.create_note(attributes_to_update=args)
 
         return new_note
+
+    @api_rest.marshal_with(note_model)
+    def put(self):
+        args = update_note_reqparser.parse_args()
+        print(args)
+        note_repository = NoteRepository()
+        modified_note = note_repository.update_note(note_id=args['id'], attributes_to_update=args)
+
+        return modified_note
