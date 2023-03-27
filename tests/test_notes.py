@@ -77,6 +77,19 @@ def test_note_creation__note_with_an_author(author_bobby, bobby_note):
     assert bobby_note['author_id'] == author_bobby['id']
     assert bobby_note['author_full_name'] == expected_author_full_name
 
+""" Read """
+
+def test_note_read(client, bobby_note):
+    response = client.get(f"/api/note/{bobby_note['id']}")
+    note = json.loads(response.data)
+
+    assert response.status_code == 200
+    assert note['id'] == bobby_note['id']
+    assert note['title'] == bobby_note['title']
+    assert note['content'] == bobby_note['content']
+    assert note['author_id'] == bobby_note['author_id']
+    assert note['author_full_name'] == bobby_note['author_full_name']
+
 """ Update """
 
 def test_note_update(client, anonymous_note):

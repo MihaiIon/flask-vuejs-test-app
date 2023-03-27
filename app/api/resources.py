@@ -38,8 +38,6 @@ class Note(Resource):
 class Note(Resource):
     @api_rest.marshal_with(note_model)
     def get(self, note_id):
-        args = read_note_reqparser.parse_args()
-
         note_repository = NoteRepository()
         note = note_repository.find_by_id(note_id)
 
