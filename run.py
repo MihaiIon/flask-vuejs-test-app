@@ -1,9 +1,9 @@
 import os
 from app import app
 
-app.run(port=5000)
+# Allow cross-origin requests from any domain
+from flask_cors import CORS
+CORS(app)
 
-# To Run:
-# python run.py
-# or
-# python -m flask run
+# Launch app
+app.run(port=8000, debug=True)

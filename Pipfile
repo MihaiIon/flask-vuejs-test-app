@@ -9,6 +9,7 @@ flask-restx = "*"
 python-dotenv = "*"
 flask = "*"
 flask-sqlalchemy = "*"
+flask-cors = "*"
 
 [dev-packages]
 pytest = "*"
