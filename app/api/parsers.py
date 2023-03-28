@@ -1,13 +1,13 @@
 from flask_restx import reqparse
 
 def non_empty_string(s):
-    if not s:
+    if not s or not s.strip():
         raise ValueError("Must not be empty string")
     return s
 
 author_reqparser = reqparse.RequestParser()
-author_reqparser.add_argument('first_name', type=str, required=True, help='An author must have first name  |')
-author_reqparser.add_argument('last_name', type=str, required=True, help='An author must have last name  |')
+author_reqparser.add_argument('first_name', type=non_empty_string, required=True, help='An author must have first name  |')
+author_reqparser.add_argument('last_name', type=non_empty_string, required=True, help='An author must have last name  |')
 
 create_note_reqparser = reqparse.RequestParser()
 create_note_reqparser.add_argument('title', type=str, required=True, help='A note must have a title |')

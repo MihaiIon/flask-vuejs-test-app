@@ -35,7 +35,7 @@ def test_author_creation(client):
     assert created_author['full_name'] == expected_full_name
 
 def test_author_creation__error_when_attempting_to_create_a_author_without_a_first_name(client):
-    data = { 'last_name': 'LastName' }
+    data = {'first_name': '   ', 'last_name': 'LastName'}
     response = client.post('/api/author/', data=data)
 
     data = json.loads(response.data)
@@ -44,7 +44,7 @@ def test_author_creation__error_when_attempting_to_create_a_author_without_a_fir
     assert response.status_code == 400
 
 def test_author_creation__error_when_attempting_to_create_a_author_without_a_last_name(client):
-    data = { 'first_name': 'FirstName' }
+    data = {'first_name': 'FirstName', 'last_name': '    '}
     response = client.post('/api/author/', data=data)
 
     data = json.loads(response.data)
