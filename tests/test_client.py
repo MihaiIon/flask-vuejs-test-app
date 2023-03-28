@@ -1,5 +1,3 @@
-""" pytests for Flask """
-
 import pytest
 from app import app
 

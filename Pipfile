@@ -5,9 +5,11 @@ name = "pypi"
 
 [packages]
 gunicorn = "==19.7.1"
-flask-restplus = "*"
+flask-restx = "*"
 python-dotenv = "*"
 flask = "*"
+flask-sqlalchemy = "*"
+flask-cors = "*"
 
 [dev-packages]
 pytest = "*"
@@ -16,4 +18,4 @@ pytest-sugar = "*"
 pytest-cov = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.10"
