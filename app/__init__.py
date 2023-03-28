@@ -1,6 +1,5 @@
 import os
 from flask import Flask, current_app, send_file
-from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, static_folder='../dist/static')
 
