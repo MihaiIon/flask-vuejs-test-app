@@ -6,6 +6,9 @@ let $axios = axios.create({
   headers: {'Content-Type': 'application/json'}
 })
 
+const location = { protocol: 'http:', hostname: '127.0.0.1', port: '8000' }
+$axios.defaults.baseURL = location.protocol + '//' + location.hostname + ':' + location.port;
+
 // Request Interceptor
 $axios.interceptors.request.use(function (config) {
   config.headers['Authorization'] = 'Fake Token'
@@ -22,12 +25,19 @@ $axios.interceptors.response.use(function (response) {
 })
 
 export default {
-
+  createAuthor(data) {
+    return $axios.post('api/author/', data);
+  },
+  fetchAuthors() {
+    return $axios.get('api/author/');
+  },
+  createNote(data) {
+    return $axios.post('api/note/', data);
+  },
   fetchResource () {
     return $axios.get(`resource/xxx`)
       .then(response => response.data)
   },
-
   fetchSecureResource () {
     return $axios.get(`secure-resource/zzz`)
       .then(response => response.data)
