@@ -1,48 +1,60 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/api">API Sample</router-link>
-    </div>
-    <div id="logos">
-      <p>
-        <img src="@/assets/vue-logo.png">
-        <span id="plus">+</span>
-        <img src="@/assets/flask-logo.png">
-      </p>
-    </div>
-    <router-view/>
-
-    <!-- FORK Me -->
-    <a href="https://github.com/gtalarico/flask-vuejs-template"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
-
+  <div id="app" class="c-app" data-app>
+    <note-list class="c-app__note-list" />
+    <forms class="c-app__forms" />
   </div>
 </template>
 
+<script>
+import Forms from '@/components/Forms.vue'
+import NoteList from '@/components/NoteList.vue'
+
+export default {
+  name: 'app',
+  components: {
+    Forms,
+    NoteList
+  }
+}
+</script>
+
 <style lang="scss">
+$text-field-label-top: 8px !default;
+$note-list-width: 300px;
+
+html, body, #app {
+  height: 100vh;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-#plus {
-  padding: 0 20px 0 20px;
-  display: inline-block;
-  font-size: 50px;
-  vertical-align: top;
-  line-height: 100px;
+
+.c-app {
+  position: relative;
 }
 
+.c-app__note-list {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  z-index: 1;
+
+  width: $note-list-width;
+}
+
+.c-app__forms {
+  position: absolute;
+  left: $note-list-width;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  z-index: 1;
+
+  background-color: #333;
+}
 </style>
