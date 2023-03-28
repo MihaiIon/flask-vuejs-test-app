@@ -34,12 +34,7 @@ export default {
   createNote(data) {
     return $axios.post('api/note/', data);
   },
-  fetchResource () {
-    return $axios.get(`resource/xxx`)
-      .then(response => response.data)
+  fetchNotes() {
+    return $axios.get('api/note/');
   },
-  fetchSecureResource () {
-    return $axios.get(`secure-resource/zzz`)
-      .then(response => response.data)
-  }
 }
