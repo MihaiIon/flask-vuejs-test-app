@@ -14,6 +14,13 @@ from .parsers import *
 @api_rest.route('/author/')
 class Author(Resource):
     @api_rest.marshal_with(author_model)
+    def get(self):
+        author_repository = AuthorRepository()
+        authors = author_repository.all()
+
+        return authors
+
+    @api_rest.marshal_with(author_model)
     def post(self):
         args = author_reqparser.parse_args()
 

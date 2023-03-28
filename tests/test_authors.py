@@ -1,6 +1,22 @@
 import pytest
 import json
 
+""" Fixtures """
+
+from .shared_fixtures import *
+
+""" Read """
+
+def test_author_read__list(client, author_bobby, author_stephen):
+    response = client.get('/api/author/')
+    authors = json.loads(response.data)
+
+    author_ids = sorted([author['id'] for author in authors])
+    expected_authors_ids = sorted([author_bobby['id'], author_stephen['id']])
+
+    assert response.status_code == 200
+    assert author_ids == expected_authors_ids
+
 """ Creation """
 
 def test_author_creation(client):
