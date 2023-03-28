@@ -1,19 +1,36 @@
 <template>
   <div class="c-forms">
-    <create-author-form />
+    <!-- <app-toast :data="toastData" /> -->
+    <create-author-form @toast="handleToast" />
     <v-divider class="c-forms__divider" dark />
-    <create-note-form />
+    <create-note-form @toast="handleToast" />
   </div>
 </template>
 
 <script>
+import AppToast from "@/components/AppToast.vue";
 import FormCard from "@/components/FormCard.vue";
 import CreateAuthorForm from "@/components/CreateAuthorForm.vue";
 import CreateNoteForm from "@/components/CreateNoteForm.vue";
 
 export default {
   name: "Forms",
-  components: { CreateAuthorForm, CreateNoteForm, FormCard },
+  components: {
+    AppToast,
+    CreateAuthorForm,
+    CreateNoteForm,
+    FormCard,
+  },
+  data() {
+    return {
+      toastData: null,
+    };
+  },
+  methods: {
+    handleToast(data) {
+      this.toastData = data;
+    },
+  },
 };
 </script>
 

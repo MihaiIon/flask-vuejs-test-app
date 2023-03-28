@@ -4,7 +4,10 @@
       <v-subheader>All Notes</v-subheader>
       <v-list-item-group v-model="selectedNote">
         <template v-for="(note, index) in formattedNotes">
-          <v-list-item :key="note.title + note.content">
+          <v-list-item
+            @click="() => deleteNote(note)"
+            :key="note.title + note.content"
+          >
             <v-list-item-content>
               <v-list-item-title
                 class="c-note-list__item-title"
@@ -45,6 +48,7 @@ export default {
     formattedNotes() {
       return this.notes.map((note) => {
         return {
+          id: note["id"],
           title: note["title"],
           content: note["content"],
           authorFullName: note["author_full_name"],
@@ -58,6 +62,14 @@ export default {
         const { data: notes } = await $backend.fetchNotes();
         console.info(notes);
         this.notes = notes;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteNote(note) {
+      try {
+        await $backend.deleteNote({ id: note.id });
+        await this.fetchNotes();
       } catch (error) {
         console.error(error);
       }
