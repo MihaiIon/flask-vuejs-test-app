@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__, static_folder='../dist/static')
 
 from .config import Config
-app.logger.info('>>> {}'.format(Config.FLASK_ENV))
+app.logger.info('>>> {}'.format(Config.FLASK_DEBUG))
 
 # initialize database connection
 from app.utils import Database
